@@ -122,31 +122,6 @@ describe HTTPI::Adapter::HTTPClient do
         adapter.get(ssl_auth_request)
       end
     end
-
-    context "(for SSL client auth with a verify mode of :none with no certs provided)" do
-      let(:ssl_auth_request) do
-        basic_request do |request|
-          request.auth.ssl.verify_mode = :none
-        end
-      end
-
-      it "verify_mode should be set" do
-        ssl_config.expects(:verify_mode=).with(ssl_auth_request.auth.ssl.openssl_verify_mode)
-
-        adapter.get(ssl_auth_request)
-      end
-
-      it "does not set client_cert and client_key "do
-        ssl_config.expects(:client_cert=).never
-        ssl_config.expects(:client_key=).never
-
-        adapter.get(ssl_auth_request)
-      end
-
-      it "does not raise an exception" do
-        expect { adapter.get(ssl_auth_request) }.to_not raise_error
-      end
-    end
   end
 
   def http_message(body = Fixture.xml)
